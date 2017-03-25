@@ -1,10 +1,100 @@
-import { Component } from '@angular/core';
+import { Component, Optional } from '@angular/core';
+import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'app works!';
+  isDarkTheme = false;
+  lastDialogResult: string;
+
+  foods: any[] = [
+    { name: 'Pizza', rating: 'Excellent' },
+    { name: 'Burritos', rating: 'Great' },
+    { name: 'French fries', rating: 'Pretty good' },
+  ];
+
+  private selectedValue: string;
+
+  private games = [
+    {value: 'rts-0', viewValue: 'Starcraft'},
+    {value: 'rpg-1', viewValue: 'Baldur\'s Gate'},
+    {value: 'fps-2', viewValue: 'Doom'}
+  ];
+
+  private progress = 0;
+  private slider = {
+    'autoTicks': false,
+    'disabled': false,
+    'invert': false,
+    'max': 100,
+    'min': 0,
+    'showTicks': false,
+    'step': 1,
+    'thumbLabel': false,
+    'value': 0,
+    'vertical': false,
+    'tickInterval': 1,
+    'checked': true
+  };
+  private tiles = [
+    { text: 'One', cols: 3, rows: 1, color: 'lightblue' },
+    { text: 'Two', cols: 1, rows: 2, color: 'lightgreen' },
+    { text: 'Three', cols: 1, rows: 1, color: 'lightpink' },
+    { text: 'Four', cols: 2, rows: 1, color: '#DDBDF1' },
+  ];
+
+  private color: string;
+
+  private availableColors = [
+    { name: 'none', color: '' },
+    { name: 'Primary', color: 'primary' },
+    { name: 'Accent', color: 'accent' },
+    { name: 'Warn', color: 'warn' }
+  ];
+
+  constructor(private _dialog: MdDialog, private _snackbar: MdSnackBar) {
+    // Update the value for the progress-bar on an interval.
+    setInterval(() => {
+      this.progress = (this.progress + Math.floor(Math.random() * 4) + 1) % 100;
+    }, 200);
+  }
+
+  openDialog() {
+    let dialogRef = this._dialog.open(DialogContentComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.lastDialogResult = result;
+    })
+  }
+
+  showSnackbar() {
+    this._snackbar.open('YUM SNACKS', 'CHEW');
+  }
+  get tickInterval(): number | 'auto' {
+    return this.slider.showTicks ? (this.slider.autoTicks ? 'auto' : this.slider.tickInterval) : null;
+  }
+  set tickInterval(v) {
+    this.slider.tickInterval = Number(v);
+  }
+}
+
+
+@Component({
+  template: `
+    <p>This is a dialog</p>
+    <p>
+      <label>
+        This is a text box inside of a dialog.
+        <input #dialogInput>
+      </label>
+    </p>
+    <p> <button md-button (click)="dialogRef.close(dialogInput.value)">CLOSE</button> </p>
+  `,
+})
+export class DialogContentComponent {
+  constructor( @Optional() public dialogRef: MdDialogRef<DialogContentComponent>) { }
 }

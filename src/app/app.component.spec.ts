@@ -1,36 +1,46 @@
-import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { } from 'jasmine';
+import 'hammerjs';
 
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
+
+import { MaterialModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 
-describe('AppComponent', () => {
+
+describe('AppComponent (template)', () => {
+
+  let comp: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let de: DebugElement;
+  let el: HTMLElement;
+
+  // async beforeEach
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
+      declarations: [AppComponent], // declare the test component
+      imports: [MaterialModule, FormsModule, BrowserAnimationsModule]
     }).compileComponents();
   }));
-
-  it('should create the app', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
-
-  it(`should have as title 'app works!'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('app works!');
-  }));
-
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
+  // 2nd beforeEach synchronous
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('app works!');
-  }));
+    comp = fixture.componentInstance; // AppComponent test instance
+
+    // query for the title <h1> by CSS element selector
+    de = fixture.debugElement.query(By.css('span.title'));
+    el = de.nativeElement;
+  });
+  it('should create component', () => expect(comp).toBeDefined());
+
+  it('should have expected <span class="title"> material component', () => {
+    fixture.detectChanges();
+    const t_de = de.nativeElement;
+    expect(t_de.innerText).toMatch('Angular Material Demo',
+      '<span class="title"> should say "Angular Material Demo"');
+  });
 });
