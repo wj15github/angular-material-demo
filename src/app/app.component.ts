@@ -17,16 +17,16 @@ export class AppComponent {
     { name: 'French fries', rating: 'Pretty good' },
   ];
 
-  private selectedValue: string;
+  public selectedValue: string;
 
-  private games = [
+  public games = [
     {value: 'rts-0', viewValue: 'Starcraft'},
     {value: 'rpg-1', viewValue: 'Baldur\'s Gate'},
     {value: 'fps-2', viewValue: 'Doom'}
   ];
 
-  private progress = 0;
-  private slider = {
+  public progress = 0;
+  public slider = {
     'autoTicks': false,
     'disabled': false,
     'invert': false,
@@ -40,16 +40,16 @@ export class AppComponent {
     'tickInterval': 1,
     'checked': true
   };
-  private tiles = [
+  public tiles = [
     { text: 'One', cols: 3, rows: 1, color: 'lightblue' },
     { text: 'Two', cols: 1, rows: 2, color: 'lightgreen' },
     { text: 'Three', cols: 1, rows: 1, color: 'lightpink' },
     { text: 'Four', cols: 2, rows: 1, color: '#DDBDF1' },
   ];
 
-  private color: string;
+  public color: string;
 
-  private availableColors = [
+  public availableColors = [
     { name: 'none', color: '' },
     { name: 'Primary', color: 'primary' },
     { name: 'Accent', color: 'accent' },
@@ -64,7 +64,7 @@ export class AppComponent {
   }
 
   openDialog() {
-    let dialogRef = this._dialog.open(DialogContentComponent);
+    const dialogRef = this._dialog.open(DialogContentComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       this.lastDialogResult = result;
